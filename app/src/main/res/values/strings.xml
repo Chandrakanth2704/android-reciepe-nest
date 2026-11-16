@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">Android Recipe Nest</string>
+    <string name="app_name">Recipe Finder &amp; Cookbook</string>
+    <string name="header_title">Recipe Finder</string>
+    <string name="header_subtitle">Discover, cook &amp; craft recipes</string>
+    <string name="tab_explore">Explore</string>
+    <string name="tab_cookbook">Cookbook</string>
+    <string name="tab_profile">Profile</string>
 </resources>
