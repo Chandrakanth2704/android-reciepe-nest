@@ -1,6 +1,6 @@
 package com.pes.androidrecipenest
 
-import kotlin.text.category
+import android.widget.Toast
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColorAsState
@@ -43,6 +43,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
@@ -129,6 +130,7 @@ fun ExploreScreen(
     viewModel: RecipeViewModel,
     onMealClick: (String) -> Unit
 ) {
+    val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
     val categories by viewModel.categories.collectAsState()
     val dietFilter by viewModel.dietFilter.collectAsState()
@@ -139,6 +141,14 @@ fun ExploreScreen(
     var searchByIngredient by remember { mutableStateOf(false) }
     var selectedFilter by remember { mutableStateOf("All") }
     val focusManager = LocalFocusManager.current
+
+    // SENSOR API: Shake phone to open a surprise recipe
+    ShakeDetector {
+        Toast.makeText(context, "Shake detected! Picking a surprise dish...", Toast.LENGTH_SHORT).show()
+        viewModel.fetchRandomRecipe { randomId ->
+            onMealClick(randomId)
+        }
+    }
 
     val greeting = remember(userName) {
         val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)

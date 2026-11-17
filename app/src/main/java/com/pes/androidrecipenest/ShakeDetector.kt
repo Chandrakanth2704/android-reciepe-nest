@@ -14,23 +14,20 @@ import kotlin.math.sqrt
 
 @Composable
 fun ShakeDetector(
-    threshold: Float = 2.3f,
-    shakeIntervalMs: Long = 1000L,
+    thresholdGForce: Float = 2.7f,
+    cooldownMs: Long = 1500L,
     onShake: () -> Unit
 ) {
     val context = LocalContext.current
     val currentOnShake by rememberUpdatedState(onShake)
 
     DisposableEffect(context) {
-        val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as? SensorManager
-        val accelerometer = sensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        val sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        var lastShakeTimestamp = 0L
 
-        var lastShakeTime = 0L
-
-        val listener = object : SensorEventListener {
-            override fun onSensorChanged(event: SensorEvent?) {
-                if (event == null || event.sensor.type != Sensor.TYPE_ACCELEROMETER) return
-
+        val sensorListener = object : SensorEventListener {
+            override fun onSensorChanged(event: SensorEvent) {
                 val x = event.values[0]
                 val y = event.values[1]
                 val z = event.values[2]
@@ -39,24 +36,30 @@ fun ShakeDetector(
                 val gY = y / SensorManager.GRAVITY_EARTH
                 val gZ = z / SensorManager.GRAVITY_EARTH
 
-                val gForce = sqrt((gX * gX + gY * gY + gZ * gZ).toDouble()).toFloat()
+                val gForce = sqrt(gX * gX + gY * gY + gZ * gZ)
 
-                val currentTime = System.currentTimeMillis()
-                if (gForce > threshold && (currentTime - lastShakeTime > shakeIntervalMs)) {
-                    lastShakeTime = currentTime
-                    currentOnShake()
+                if (gForce > thresholdGForce) {
+                    val now = System.currentTimeMillis()
+                    if (now - lastShakeTimestamp > cooldownMs) {
+                        lastShakeTimestamp = now
+                        currentOnShake()
+                    }
                 }
             }
 
-            override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
+            override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) = Unit
         }
 
-        if (accelerometer != null) {
-            sensorManager.registerListener(listener, accelerometer, SensorManager.SENSOR_DELAY_UI)
+        accelerometer?.let {
+            sensorManager.registerListener(
+                sensorListener,
+                it,
+                SensorManager.SENSOR_DELAY_UI
+            )
         }
 
         onDispose {
-            sensorManager?.unregisterListener(listener)
+            sensorManager.unregisterListener(sensorListener)
         }
     }
 }
