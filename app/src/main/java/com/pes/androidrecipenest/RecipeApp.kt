@@ -20,6 +20,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.pes.recipefinderandcookbook.AddRecipeScreen
+import com.pes.recipefinderandcookbook.ProfileScreen
 
 @Composable
 fun RecipeApp(

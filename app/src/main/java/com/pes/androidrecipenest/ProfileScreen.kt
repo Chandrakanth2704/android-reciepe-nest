@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
+import com.pes.androidrecipenest.R
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateColorAsState
@@ -43,6 +44,9 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.pes.androidrecipenest.DietFilter
+import com.pes.androidrecipenest.DietMarkIcon
+import com.pes.androidrecipenest.RecipeViewModel
 import java.io.File
 
 private fun createProfileAvatarUri(context: Context): Uri {
