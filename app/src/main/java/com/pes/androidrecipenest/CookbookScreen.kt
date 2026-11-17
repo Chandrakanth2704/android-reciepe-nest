@@ -34,25 +34,6 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 
 
-//FOR NOW. REMOVE WHEN EXPLORE SCREEN ADDED
-@Composable
-fun DietMarkIcon(color: Color, modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier
-            .size(14.dp)
-            .border(1.5.dp, color, RoundedCornerShape(3.dp)),
-        contentAlignment = Alignment.Center
-    ) {
-        Box(
-            modifier = Modifier
-                .size(7.dp)
-                .clip(CircleShape)
-                .background(color)
-        )
-    }
-}
-
-
 @Composable
 fun CookbookScreen(
     viewModel: RecipeViewModel,
