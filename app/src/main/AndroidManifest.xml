@@ -33,6 +33,12 @@
             </intent-filter>
         </activity>
 
+        <!-- Second Activity launched via Explicit Intent -->
+        <activity
+            android:name=".CookingModeActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AndroidRecipeNest" />
+
         <!-- Needed for camera photo URIs -->
         <provider
             android:name="androidx.core.content.FileProvider"
